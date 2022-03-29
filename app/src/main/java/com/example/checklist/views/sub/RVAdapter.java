@@ -17,16 +17,17 @@ import java.util.List;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder> {
     private List<Task> taskList;
-    private ItemLayoutBinding binding;
+//    private ItemLayoutBinding binding;
 
-    public RVAdapter(List<Task> taskList, ItemLayoutBinding binding){
+    public RVAdapter(List<Task> taskList){
         this.taskList = taskList;
-        this.binding = binding;
     }
 
     @NonNull
     @Override
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ItemLayoutBinding binding = ItemLayoutBinding.inflate(LayoutInflater
+        .from(parent.getContext()), parent, false);
         return new TaskViewHolder(binding);
     }
 
