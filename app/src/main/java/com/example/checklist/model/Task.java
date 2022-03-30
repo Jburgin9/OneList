@@ -24,4 +24,6 @@ public class Task {
     public void setCompleted(boolean completed) {
         isCompleted = completed;
     }
+
+
 }

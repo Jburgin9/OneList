@@ -6,6 +6,4 @@ import java.util.List;
 
 public interface Presenter {
     void displayTaskList(List<Task> taskList);
-    void onSuccessTaskAdded(boolean isComplete);
-    void onErrorTaskAdded(boolean isError);
 }

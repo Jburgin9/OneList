@@ -1,26 +1,24 @@
 package com.example.checklist.views.sub;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.checklist.R;
 import com.example.checklist.databinding.ItemLayoutBinding;
 import com.example.checklist.model.Task;
 
 import java.util.List;
 
-public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder> {
+public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
+    private static final String TAG = "Adapter";
     private List<Task> taskList;
-//    private ItemLayoutBinding binding;
+    private RVPresenterImpl presenter;
 
-    public RVAdapter(List<Task> taskList){
+    public RVAdapter(List<Task> taskList, RVPresenterImpl presenter){
         this.taskList = taskList;
+        this.presenter = presenter;
     }
 
     @NonNull
@@ -34,6 +32,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         holder.binding.titleTv.setText(taskList.get(position).getTitle());
+        holder.binding.trashBtn.setOnClickListener(v -> {
+                presenter.deleteTask(taskList.get(position));
+                notifyItemRemoved(position);
+                notifyDataSetChanged();
+        });
     }
 
     @Override
@@ -41,12 +44,12 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder> {
         return taskList.size();
     }
 
+
     class TaskViewHolder extends RecyclerView.ViewHolder {
         ItemLayoutBinding binding;
         public TaskViewHolder(ItemLayoutBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-
         }
     }
 }
