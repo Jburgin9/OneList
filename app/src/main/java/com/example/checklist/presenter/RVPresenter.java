@@ -1,16 +1,16 @@
-package com.example.checklist.views.sub;
+package com.example.checklist.presenter;
 
 import com.example.checklist.model.ModelImpl;
 import com.example.checklist.model.Task;
 
 import java.util.List;
 
-public class RVPresenterImpl {
+public class RVPresenter {
     private static final String TAG = "RV";
 //    private RVPresenter presenter;
     private ModelImpl model;
 
-    public RVPresenterImpl(RVPresenter presenter, ModelImpl model){
+    public RVPresenter(RVPresenterInterface presenter, ModelImpl model){
 //        this.presenter = presenter;
         this.model = model;
     }

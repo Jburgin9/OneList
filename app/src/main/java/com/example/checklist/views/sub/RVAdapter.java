@@ -8,15 +8,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.checklist.databinding.ItemLayoutBinding;
 import com.example.checklist.model.Task;
+import com.example.checklist.presenter.RVPresenter;
 
 import java.util.List;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
     private static final String TAG = "Adapter";
     private List<Task> taskList;
-    private RVPresenterImpl presenter;
+    private RVPresenter presenter;
 
-    public RVAdapter(List<Task> taskList, RVPresenterImpl presenter){
+    public RVAdapter(List<Task> taskList, RVPresenter presenter){
         this.taskList = taskList;
         this.presenter = presenter;
     }
