@@ -23,7 +23,7 @@ import com.example.checklist.presenter.RVPresenterInterface;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
-        MainPresenterInterface, Model, RVPresenterInterface {
+        MainPresenterInterface, Model {
     private static final String TAG = "share";
     private MainPresenter mainPresenter;
     private ActivityMainBinding binding;
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements
         preferenceSingleton = SharedPreferenceSingleton.getInstance(this);
         modelImpl = new ModelImpl(this, preferenceSingleton);
         mainPresenter = new MainPresenter(this, modelImpl);
-        rvPresenter = new RVPresenter(this, modelImpl);
+        rvPresenter = new RVPresenter(modelImpl);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         binding.rv.setLayoutManager(layoutManager);
     }

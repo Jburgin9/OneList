@@ -7,11 +7,10 @@ import java.util.List;
 
 public class RVPresenter {
     private static final String TAG = "RV";
-//    private RVPresenter presenter;
+
     private ModelImpl model;
 
-    public RVPresenter(RVPresenterInterface presenter, ModelImpl model){
-//        this.presenter = presenter;
+    public RVPresenter(ModelImpl model){
         this.model = model;
     }
 
