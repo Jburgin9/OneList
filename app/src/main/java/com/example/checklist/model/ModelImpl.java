@@ -3,6 +3,7 @@ package com.example.checklist.model;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.checklist.repo.SharedPreferenceSingleton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -14,41 +15,36 @@ import java.util.Set;
 
 public class ModelImpl {
     private Model modelInterface;
-    public static final String PREFERENCES_INSTANCE = "first";
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
     private List<Task> taskList;
+    private SharedPreferenceSingleton preferenceSingleton;
 
-    public ModelImpl(SharedPreferences sharedPreferences, Model modelInterface){
-        this.sharedPreferences = sharedPreferences;
-        editor = sharedPreferences.edit();
+    public ModelImpl(Model modelInterface,
+                     SharedPreferenceSingleton preferenceSingleton){
         this.modelInterface = modelInterface;
-        taskList = new ArrayList<>();
+        this.preferenceSingleton = preferenceSingleton;
+        taskList = preferenceSingleton.getSavedTaskList();
     }
 
     public synchronized void addTask(Task newTask){
         boolean isComplete = false;
         if(newTask != null){
             taskList.add(newTask);
-            Gson gson = new Gson();
-            String json = gson.toJson(taskList);
-            editor.putString("taskList", json);
-            isComplete = editor.commit();
+            preferenceSingleton.saveList(taskList);
+            isComplete = true;
             modelInterface.onSuccessTaskAdded(isComplete);
         } else {
-            modelInterface.onFailureTaskAdded(isComplete);
+            modelInterface.onFailureAddError(isComplete);
         }
     }
 
     public synchronized List<Task> getTaskList(){
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("taskList", "");
-        if(json.isEmpty()){
-
-        } else {
-            Type type = new TypeToken<List<Task>>(){}.getType();
-            taskList = gson.fromJson(json, type);
-        }
         return taskList;
+    }
+
+    public synchronized void updateList(List<Task> updatedList){
+        preferenceSingleton.saveList(updatedList);
+    }
+    public void shutdown(){
+        preferenceSingleton.shutdown();
     }
 }

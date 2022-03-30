@@ -19,9 +19,8 @@ public class PresenterImpl {
         this.modelImpl = modelImpl;
     }
 
-    public void getTask(){
-        List<Task> testList = modelImpl.getTaskList();
-        presenterInterface.displayTaskList(testList);
+    public void displayTaskList(){
+        presenterInterface.displayTaskList(modelImpl.getTaskList());
     }
 
     public void addTask(String title){
