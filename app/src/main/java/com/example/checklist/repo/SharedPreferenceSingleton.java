@@ -14,7 +14,6 @@ import java.util.List;
 
 public class SharedPreferenceSingleton {
     public static final String PREFERENCES_INSTANCE = "first";
-    private static final String TAG = "share2";
     private static SharedPreferenceSingleton singleton;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -38,8 +37,6 @@ public class SharedPreferenceSingleton {
 
 
     public boolean saveList(List<Task> currList){
-        Log.d(TAG, "addTask: " + editor.toString());
-        Log.d(TAG, "addTask: " + sharedPreferences.toString());
         boolean isSuccessful = false;
         if(currList == null) return isSuccessful;
         String json = gson.toJson(currList);
@@ -60,14 +57,27 @@ public class SharedPreferenceSingleton {
         return currList;
     }
 
-    public void deleteTask(Task taskToRemove){
-        int idxToRemove = getSavedTaskList().indexOf(taskToRemove);
-        getSavedTaskList().remove(idxToRemove);
-        saveList(getSavedTaskList());
+    public void saveCompletedList(List<Task> completedList){
+        if(completedList == null) return;
+        String json = gson.toJson(completedList);
+        editor.putString("completedList", json);
+        editor.commit();
     }
     public void shutdown(){
         editor = null;
         sharedPreferences = null;
         gson = null;
+    }
+
+    public List<Task> getSavedCompletedList() {
+        List<Task> completedList;
+        String json = sharedPreferences.getString("completedList", "");
+        if(json.isEmpty()){
+            return new ArrayList<>();
+        } else {
+            Type type = new TypeToken<List<Task>>(){}.getType();
+            completedList = gson.fromJson(json, type);
+        }
+        return completedList;
     }
 }

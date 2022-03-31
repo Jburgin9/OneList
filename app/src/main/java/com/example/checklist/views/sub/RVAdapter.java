@@ -1,5 +1,6 @@
 package com.example.checklist.views.sub;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -8,15 +9,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.checklist.databinding.ItemLayoutBinding;
 import com.example.checklist.model.Task;
+import com.example.checklist.presenter.RVPresenter;
 
 import java.util.List;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
     private static final String TAG = "Adapter";
     private List<Task> taskList;
-    private RVPresenterImpl presenter;
+    private RVPresenter presenter;
 
-    public RVAdapter(List<Task> taskList, RVPresenterImpl presenter){
+    public RVAdapter(List<Task> taskList, RVPresenter presenter){
         this.taskList = taskList;
         this.presenter = presenter;
     }
@@ -33,9 +35,17 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         holder.binding.titleTv.setText(taskList.get(position).getTitle());
         holder.binding.trashBtn.setOnClickListener(v -> {
-                presenter.deleteTask(taskList.get(position));
+                presenter.deleteFromTaskList(taskList.get(position));
                 notifyItemRemoved(position);
                 notifyDataSetChanged();
+        });
+        holder.binding.isCompleteBox.setOnClickListener(v -> {
+            if(holder.binding.isCompleteBox.isChecked()){
+                Log.d(TAG, "onBindViewHolder: checked" );
+                presenter.taskComplete(taskList.get(position));
+                notifyItemRemoved(position);
+                notifyDataSetChanged();
+            }
         });
     }
 

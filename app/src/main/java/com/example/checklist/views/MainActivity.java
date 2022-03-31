@@ -13,23 +13,23 @@ import com.example.checklist.databinding.ActivityMainBinding;
 import com.example.checklist.model.Model;
 import com.example.checklist.model.ModelImpl;
 import com.example.checklist.model.Task;
-import com.example.checklist.presenter.Presenter;
-import com.example.checklist.presenter.PresenterImpl;
+import com.example.checklist.presenter.MainPresenterInterface;
+import com.example.checklist.presenter.MainPresenter;
 import com.example.checklist.repo.SharedPreferenceSingleton;
 import com.example.checklist.views.sub.RVAdapter;
-import com.example.checklist.views.sub.RVPresenterImpl;
-import com.example.checklist.views.sub.RVPresenter;
+import com.example.checklist.presenter.RVPresenter;
+import com.example.checklist.presenter.RVPresenterInterface;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
-        Presenter, Model, RVPresenter {
+        MainPresenterInterface, Model {
     private static final String TAG = "share";
-    private PresenterImpl presenterImpl;
+    private MainPresenter mainPresenter;
     private ActivityMainBinding binding;
     private SharedPreferenceSingleton preferenceSingleton;
     private ModelImpl modelImpl;
-    private RVPresenterImpl rvPresenterImpl;
+    private RVPresenter rvPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +39,10 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(view);
         setup();
         Log.d(TAG, "onCreate: " + preferenceSingleton.toString());
-        presenterImpl.displayTaskList();
+        mainPresenter.displayTaskList();
         binding.addBtn.setOnClickListener(v -> {
-            presenterImpl.addTask(binding.taskTitleEt.getText().toString());
-            presenterImpl.displayTaskList();
+            mainPresenter.addTask(binding.taskTitleEt.getText().toString());
+            mainPresenter.displayTaskList();
             binding.taskTitleEt.setText("");
         });
     }
@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity implements
     public void setup(){
         preferenceSingleton = SharedPreferenceSingleton.getInstance(this);
         modelImpl = new ModelImpl(this, preferenceSingleton);
-        presenterImpl = new PresenterImpl(this, modelImpl);
-        rvPresenterImpl = new RVPresenterImpl(this, modelImpl);
+        mainPresenter = new MainPresenter(this, modelImpl);
+        rvPresenter = new RVPresenter(modelImpl);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         binding.rv.setLayoutManager(layoutManager);
     }
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void displayTaskList(List<Task> taskList) {
         Log.d(TAG, "onCreate: ");
-        binding.rv.setAdapter(new RVAdapter(taskList, rvPresenterImpl));
+        binding.rv.setAdapter(new RVAdapter(taskList, rvPresenter));
     }
 
     @Override

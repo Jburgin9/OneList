@@ -16,6 +16,7 @@ import java.util.Set;
 public class ModelImpl {
     private Model modelInterface;
     private List<Task> taskList;
+    private List<Task> completedList;
     private SharedPreferenceSingleton preferenceSingleton;
 
     public ModelImpl(Model modelInterface,
@@ -23,6 +24,7 @@ public class ModelImpl {
         this.modelInterface = modelInterface;
         this.preferenceSingleton = preferenceSingleton;
         taskList = preferenceSingleton.getSavedTaskList();
+        completedList = preferenceSingleton.getSavedCompletedList();
     }
 
     public synchronized void addTask(Task newTask){
@@ -37,13 +39,18 @@ public class ModelImpl {
         }
     }
 
-    public synchronized List<Task> getTaskList(){
-        return taskList;
+    public synchronized void saveCompletedList(List<Task> completedList){
+            preferenceSingleton.saveCompletedList(completedList);
     }
 
     public synchronized void updateList(List<Task> updatedList){
         preferenceSingleton.saveList(updatedList);
     }
+
+    public synchronized List<Task> getTaskList(){
+        return taskList;
+    }
+    public synchronized List<Task> getCompletedList() { return completedList; }
     public void shutdown(){
         preferenceSingleton.shutdown();
     }
