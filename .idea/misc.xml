@@ -4,8 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/JBurg.DESKTOP-MLOCIDV/OneDrive/Desktop/Code/Android/Checklist/app/src/main/res/layout/activity_main.xml" value="0.18857142857142858" />
+        <entry key="..\:/Users/JBurg.DESKTOP-MLOCIDV/OneDrive/Desktop/Code/Android/Checklist/app/src/main/res/layout/activity_main_1.xml" value="0.12455516014234876" />
+        <entry key="..\:/Users/JBurg.DESKTOP-MLOCIDV/OneDrive/Desktop/Code/Android/Checklist/app/src/main/res/layout/completed_tasks_frag_layout.xml" value="0.12455516014234876" />
         <entry key="..\:/Users/JBurg.DESKTOP-MLOCIDV/OneDrive/Desktop/Code/Android/Checklist/app/src/main/res/layout/frag_layout.xml" value="0.1" />
         <entry key="..\:/Users/JBurg.DESKTOP-MLOCIDV/OneDrive/Desktop/Code/Android/Checklist/app/src/main/res/layout/item_layout.xml" value="0.2857142857142857" />
+        <entry key="..\:/Users/JBurg.DESKTOP-MLOCIDV/OneDrive/Desktop/Code/Android/Checklist/app/src/main/res/layout/task_working_frag_layout.xml" value="0.14635416666666667" />
+        <entry key="..\:/Users/JBurg.DESKTOP-MLOCIDV/OneDrive/Desktop/Code/Android/Checklist/app/src/main/res/layout/viewpager2.xml" value="0.14635416666666667" />
       </map>
     </option>
   </component>

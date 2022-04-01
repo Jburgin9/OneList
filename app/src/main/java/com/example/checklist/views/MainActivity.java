@@ -71,14 +71,4 @@ public class MainActivity extends AppCompatActivity implements
     public void onFailureAddError(boolean isComplete) {
 
     }
-
-    @Override
-    public void onSuccessTaskRemoved(boolean isComplete) {
-
-    }
-
-    @Override
-    public void onFailureRemoveError(boolean isComplete) {
-
-    }
 }
