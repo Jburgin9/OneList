@@ -7,9 +7,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.checklist.databinding.ActivityMain1Binding;
+import com.example.checklist.model.Model;
+import com.example.checklist.model.Task;
+import com.example.checklist.presenter.MainPresenterInterface;
 import com.google.android.material.tabs.TabLayout;
 
-public class MainActivity1 extends AppCompatActivity {
+import java.util.List;
+
+public class MainActivity1 extends AppCompatActivity implements Model,
+        MainPresenterInterface {
     private ActivityMain1Binding binding;
     private ViewPagerFragmentStateAdapter viewPagerFragmentStateAdapter;
 
@@ -43,5 +49,26 @@ public class MainActivity1 extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    @Override
+    public void onSuccessTaskAdded(boolean taskAdded) {
+
+    }
+
+    @Override
+    public void onFailureAddError(boolean isError) {
+
+    }
+
+    @Override
+    public void displayTaskList(List<Task> taskList) {
+
+    }
+
+    @Override
+    public void getCompletedTaskList(List<Task> completedTaskList) {
+
     }
 }

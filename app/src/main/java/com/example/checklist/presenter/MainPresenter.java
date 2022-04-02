@@ -20,4 +20,8 @@ public class MainPresenter {
         Task newTask = new Task(title, false);
         modelImpl.addTask(newTask);
     }
+
+    public void displayCompletedList(){
+        mainPresenterInterfaceInterface.getCompletedTaskList(modelImpl.getCompletedList());
+    }
 }

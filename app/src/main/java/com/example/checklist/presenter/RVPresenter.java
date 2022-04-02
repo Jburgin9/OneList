@@ -10,9 +10,11 @@ import java.util.List;
 public class RVPresenter {
     private static final String TAG = "RV";
     private ModelImpl model;
+    private RVPresenterInterface presenter;
 
-    public RVPresenter(ModelImpl model){
+    public RVPresenter(ModelImpl model, RVPresenterInterface presenterInterface){
         this.model = model;
+        presenter = presenterInterface;
     }
 
     public void deleteFromTaskList(Task task){
@@ -21,12 +23,7 @@ public class RVPresenter {
         model.updateList(model.getTaskList());
     }
 
-    public void taskComplete(Task task) {
-        if(task != null){
-            task.setCompleted(true);
-            model.getCompletedList().add(task);
-            model.saveCompletedList(model.getCompletedList());
-            deleteFromTaskList(task);
-        }
+    public void displayCompletedTasks() {
+        presenter.displayCompletedTaskList(model.getTaskList());
     }
 }

@@ -6,4 +6,7 @@ import java.util.List;
 
 public interface MainPresenterInterface {
     void displayTaskList(List<Task> taskList);
+    void getCompletedTaskList(List<Task> completedTaskList);
+
 }
+

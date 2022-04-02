@@ -13,8 +13,6 @@ import androidx.viewbinding.ViewBinding;
 import com.example.checklist.databinding.TaskWorkingFragLayoutBinding;
 
 abstract class BaseTaskFragment extends Fragment {
-    protected ViewBinding binding;
-
 
     protected abstract ViewBinding getViewBinding();
 
@@ -23,19 +21,18 @@ abstract class BaseTaskFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = getViewBinding();
+
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return binding.getRoot();
+        return getViewBinding().getRoot();
     }
 
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
     }
 }
