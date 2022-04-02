@@ -3,6 +3,7 @@ package com.example.checklist.views.sub;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,20 +34,50 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
-        holder.binding.titleTv.setText(taskList.get(position).getTitle());
-        holder.binding.trashBtn.setOnClickListener(v -> {
-                presenter.deleteFromTaskList(taskList.get(position));
-                notifyItemRemoved(position);
-                notifyDataSetChanged();
+        int truePosition = holder.getAdapterPosition();
+        holder.binding.titleTv.setText(taskList.get(truePosition).getTitle());
+        holder.binding.isCompleteBox.setOnCheckedChangeListener(null);
+        holder.binding.isCompleteBox.setSelected(taskList.get(truePosition).isCompleted());
+        holder.binding.isCompleteBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    taskList.get(truePosition).setCompleted(b);
+//                    holder.binding.isCompleteBox.setChecked(taskList.get(truePosition).isCompleted());
+//                    presenter.deleteFromTaskList(taskList.get(truePosition));
+//                    notifyItemRemoved(truePosition);
+//                    notifyDataSetChanged();
+
+                }
+            }
         });
+
+        holder.binding.isCompleteBox.setChecked(taskList.get(truePosition).isCompleted());
         holder.binding.isCompleteBox.setOnClickListener(v -> {
-            if(holder.binding.isCompleteBox.isChecked()){
-                Log.d(TAG, "onBindViewHolder: checked" );
-                presenter.taskComplete(taskList.get(position));
-                notifyItemRemoved(position);
+            if(taskList.get(truePosition).isCompleted()){
+                holder.binding.isCompleteBox.setChecked(taskList.get(truePosition).isCompleted());
+                presenter.deleteFromTaskList(taskList.get(truePosition));
+                notifyItemRemoved(truePosition);
                 notifyDataSetChanged();
             }
         });
+
+
+//        holder.binding.trashBtn.setOnClickListener(v -> {
+//                presenter.deleteFromTaskList(taskList.get(position));
+//                notifyItemRemoved(position);
+//                notifyDataSetChanged();
+//        });
+//        holder.binding.isCompleteBox.setOnClickListener(v -> {
+//
+//            if(holder.binding.isCompleteBox.isChecked()){
+//                Log.d(TAG, "onBindViewHolder: checked" );
+//                taskList.get(position).setCompleted(true);
+//                presenter.taskComplete(taskList.get(position));
+//                notifyItemRemoved(position);
+//                notifyDataSetChanged();
+//            }
+//        });
     }
 
     @Override
