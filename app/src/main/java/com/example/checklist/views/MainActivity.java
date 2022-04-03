@@ -41,9 +41,12 @@ public class MainActivity extends AppCompatActivity implements
         Log.d(TAG, "onCreate: " + preferenceSingleton.toString());
         mainPresenter.displayTaskList();
         binding.addBtn.setOnClickListener(v -> {
-            mainPresenter.addTask(binding.taskTitleEt.getText().toString());
-            mainPresenter.displayTaskList();
-            binding.taskTitleEt.setText("");
+            if(!binding.taskTitleEt.getText().toString().trim().equals("")){
+                mainPresenter.addTask(binding.taskTitleEt.getText().toString());
+                mainPresenter.displayTaskList();
+                binding.taskTitleEt.setText("");
+            }
+            Toast.makeText(this, "Enter valid title", Toast.LENGTH_SHORT);
         });
     }
 
