@@ -8,7 +8,6 @@ import com.example.checklist.model.Task;
 import java.util.List;
 
 public class RVPresenter {
-    private static final String TAG = "RV";
     private ModelImpl model;
 
     public RVPresenter(ModelImpl model){
@@ -26,6 +25,7 @@ public class RVPresenter {
             task.setCompleted(true);
             model.getCompletedList().add(task);
             model.saveCompletedList(model.getCompletedList());
+            model.deleteTitle(task.getTitle());
             deleteFromTaskList(task);
         }
     }

@@ -18,6 +18,7 @@ public class ModelImpl {
     private List<Task> taskList;
     private List<Task> completedList;
     private SharedPreferenceSingleton preferenceSingleton;
+    private Set<String> inUseTitles;
 
     public ModelImpl(Model modelInterface,
                      SharedPreferenceSingleton preferenceSingleton){
@@ -25,33 +26,36 @@ public class ModelImpl {
         this.preferenceSingleton = preferenceSingleton;
         taskList = preferenceSingleton.getSavedTaskList();
         completedList = preferenceSingleton.getSavedCompletedList();
+        inUseTitles = preferenceSingleton.getSavedTitles();
     }
 
     public synchronized void addTask(Task newTask){
-        boolean isComplete = false;
         if(newTask != null){
             taskList.add(newTask);
-            preferenceSingleton.saveList(taskList);
-            isComplete = true;
-            modelInterface.onSuccessTaskAdded(isComplete);
-        } else {
-            modelInterface.onFailureAddError(isComplete);
+            preferenceSingleton.saveList(taskList, inUseTitles);
+            inUseTitles.add(newTask.getTitle());
+            modelInterface.onSuccessTaskAdded(true);
         }
     }
 
     public synchronized void saveCompletedList(List<Task> completedList){
-            preferenceSingleton.saveCompletedList(completedList);
+        preferenceSingleton.saveCompletedList(completedList);
     }
 
     public synchronized void updateList(List<Task> updatedList){
-        preferenceSingleton.saveList(updatedList);
+        preferenceSingleton.saveList(updatedList, inUseTitles);
     }
 
+    public synchronized boolean isTitleUnique(String title){ return inUseTitles.contains(title); }
     public synchronized List<Task> getTaskList(){
         return taskList;
     }
     public synchronized List<Task> getCompletedList() { return completedList; }
     public void shutdown(){
         preferenceSingleton.shutdown();
+    }
+
+    public void deleteTitle(String title) {
+        inUseTitles.remove(title);
     }
 }

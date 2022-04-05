@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,9 +57,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
         holder.binding.isCompleteBox.setOnClickListener(v -> {
             if(taskList.get(truePosition).isCompleted()){
                 holder.binding.isCompleteBox.setChecked(taskList.get(truePosition).isCompleted());
-                presenter.deleteFromTaskList(taskList.get(truePosition));
+                presenter.taskComplete(taskList.get(truePosition));
                 notifyItemRemoved(truePosition);
                 notifyDataSetChanged();
+                Toast.makeText(v.getContext(), "Task Completed", Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -10,7 +10,9 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class SharedPreferenceSingleton {
     public static final String PREFERENCES_INSTANCE = "first";
@@ -35,12 +37,12 @@ public class SharedPreferenceSingleton {
         return singleton;
     }
 
-
-    public boolean saveList(List<Task> currList){
+    public boolean saveList(List<Task> currList, Set<String> uniqueNames){
         boolean isSuccessful = false;
         if(currList == null) return isSuccessful;
         String json = gson.toJson(currList);
         editor.putString("taskList", json);
+        editor.putStringSet("uniqueNames", uniqueNames);
         isSuccessful = editor.commit();
         return isSuccessful;
     }
@@ -49,7 +51,7 @@ public class SharedPreferenceSingleton {
         List<Task> currList;
         String json = sharedPreferences.getString("taskList", "");
         if(json.isEmpty()){
-            return new ArrayList<>();
+            return new ArrayList<>(5);
         } else {
             Type type = new TypeToken<List<Task>>(){}.getType();
             currList = gson.fromJson(json, type);
@@ -63,21 +65,27 @@ public class SharedPreferenceSingleton {
         editor.putString("completedList", json);
         editor.commit();
     }
-    public void shutdown(){
-        editor = null;
-        sharedPreferences = null;
-        gson = null;
-    }
 
     public List<Task> getSavedCompletedList() {
         List<Task> completedList;
         String json = sharedPreferences.getString("completedList", "");
         if(json.isEmpty()){
-            return new ArrayList<>();
+            return new ArrayList<>(5);
         } else {
             Type type = new TypeToken<List<Task>>(){}.getType();
             completedList = gson.fromJson(json, type);
         }
         return completedList;
     }
+
+    public Set<String> getSavedTitles(){
+        return sharedPreferences.getStringSet("uniqueNames", new HashSet<>(5));
+    }
+
+    public void shutdown(){
+        editor = null;
+        sharedPreferences = null;
+        gson = null;
+    }
+
 }

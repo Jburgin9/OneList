@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.checklist.ExceededListSizeException;
 import com.example.checklist.databinding.ActivityMainBinding;
 import com.example.checklist.model.Model;
 import com.example.checklist.model.ModelImpl;
@@ -21,14 +22,14 @@ import com.example.checklist.presenter.RVPresenter;
 import com.example.checklist.presenter.RVPresenterInterface;
 
 import java.util.List;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements
         MainPresenterInterface, Model {
-    private static final String TAG = "share";
+    private static final String TAG = "Main";
     private MainPresenter mainPresenter;
     private ActivityMainBinding binding;
     private SharedPreferenceSingleton preferenceSingleton;
-    private ModelImpl modelImpl;
     private RVPresenter rvPresenter;
 
     @Override
@@ -38,21 +39,29 @@ public class MainActivity extends AppCompatActivity implements
         View view = binding.getRoot();
         setContentView(view);
         setup();
-        Log.d(TAG, "onCreate: " + preferenceSingleton.toString());
         mainPresenter.displayTaskList();
         binding.addBtn.setOnClickListener(v -> {
-            if(!binding.taskTitleEt.getText().toString().trim().equals("")){
-                mainPresenter.addTask(binding.taskTitleEt.getText().toString());
+            if(!binding.taskTitleEt.getText().toString().trim().equals("") &&
+                !mainPresenter.isUniqueTitle(binding.taskTitleEt.getText().toString().trim())){
+                try {
+                    mainPresenter.addTask(binding.taskTitleEt.getText().toString().trim());
+                } catch (ExceededListSizeException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
                 mainPresenter.displayTaskList();
                 binding.taskTitleEt.setText("");
+            } else {
+                Toast.makeText(this, "Empty or duplicates values will not be accepted",
+                        Toast.LENGTH_SHORT).show();
             }
-            Toast.makeText(this, "Enter valid title", Toast.LENGTH_SHORT);
         });
     }
 
     public void setup(){
         preferenceSingleton = SharedPreferenceSingleton.getInstance(this);
-        modelImpl = new ModelImpl(this, preferenceSingleton);
+        ModelImpl modelImpl = new ModelImpl(this, preferenceSingleton);
         mainPresenter = new MainPresenter(this, modelImpl);
         rvPresenter = new RVPresenter(modelImpl);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -61,27 +70,11 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void displayTaskList(List<Task> taskList) {
-        Log.d(TAG, "onCreate: ");
         binding.rv.setAdapter(new RVAdapter(taskList, rvPresenter));
     }
 
     @Override
     public void onSuccessTaskAdded(boolean isComplete) {
         Toast.makeText(this, "success", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onFailureAddError(boolean isComplete) {
-
-    }
-
-    @Override
-    public void onSuccessTaskRemoved(boolean isComplete) {
-
-    }
-
-    @Override
-    public void onFailureRemoveError(boolean isComplete) {
-
     }
 }
