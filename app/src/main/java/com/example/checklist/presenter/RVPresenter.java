@@ -1,16 +1,12 @@
 package com.example.checklist.presenter;
 
-import android.util.Log;
-
-import com.example.checklist.model.ModelImpl;
+import com.example.checklist.repo.TaskRepo;
 import com.example.checklist.model.Task;
 
-import java.util.List;
-
 public class RVPresenter {
-    private ModelImpl model;
+    private TaskRepo model;
 
-    public RVPresenter(ModelImpl model){
+    public RVPresenter(TaskRepo model){
         this.model = model;
     }
 

@@ -5,27 +5,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.example.checklist.ExceededListSizeException;
 import com.example.checklist.databinding.ActivityMainBinding;
-import com.example.checklist.model.Model;
-import com.example.checklist.model.ModelImpl;
+import com.example.checklist.repo.Repo;
+import com.example.checklist.repo.TaskRepo;
 import com.example.checklist.model.Task;
-import com.example.checklist.presenter.MainPresenterInterface;
 import com.example.checklist.presenter.MainPresenter;
 import com.example.checklist.repo.SharedPreferenceSingleton;
+import com.example.checklist.views.contracts.View;
 import com.example.checklist.views.sub.RVAdapter;
 import com.example.checklist.presenter.RVPresenter;
-import com.example.checklist.presenter.RVPresenterInterface;
 
 import java.util.List;
-import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements
-        MainPresenterInterface, Model {
+        View, Repo {
     private static final String TAG = "Main";
     private MainPresenter mainPresenter;
     private ActivityMainBinding binding;
@@ -36,13 +32,15 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
+        android.view.View view = binding.getRoot();
         setContentView(view);
         setup();
         mainPresenter.displayTaskList();
         binding.addBtn.setOnClickListener(v -> {
-            if(!binding.taskTitleEt.getText().toString().trim().equals("") &&
-                !mainPresenter.isUniqueTitle(binding.taskTitleEt.getText().toString().trim())){
+            if(!binding.taskTitleEt.getText()
+                    .toString().trim().equals("") &&
+                !mainPresenter.isUniqueTitle(binding.taskTitleEt.getText()
+                        .toString().trim())){
                 try {
                     mainPresenter.addTask(binding.taskTitleEt.getText().toString().trim());
                 } catch (ExceededListSizeException e) {
@@ -61,9 +59,9 @@ public class MainActivity extends AppCompatActivity implements
 
     public void setup(){
         preferenceSingleton = SharedPreferenceSingleton.getInstance(this);
-        ModelImpl modelImpl = new ModelImpl(this, preferenceSingleton);
-        mainPresenter = new MainPresenter(this, modelImpl);
-        rvPresenter = new RVPresenter(modelImpl);
+        TaskRepo taskRepo = new TaskRepo(this, preferenceSingleton);
+        mainPresenter = new MainPresenter(this, taskRepo);
+        rvPresenter = new RVPresenter(taskRepo);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         binding.rv.setLayoutManager(layoutManager);
     }

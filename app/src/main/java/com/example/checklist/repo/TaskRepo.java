@@ -1,41 +1,33 @@
-package com.example.checklist.model;
+package com.example.checklist.repo;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import com.example.checklist.model.Task;
 
-import com.example.checklist.repo.SharedPreferenceSingleton;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ModelImpl {
-    private Model modelInterface;
+public class TaskRepo {
+    private Repo repoInterface;
     private List<Task> taskList;
     private List<Task> completedList;
     private SharedPreferenceSingleton preferenceSingleton;
     private Set<String> inUseTitles;
 
-    public ModelImpl(Model modelInterface,
-                     SharedPreferenceSingleton preferenceSingleton){
-        this.modelInterface = modelInterface;
+    public TaskRepo(Repo repoInterface,
+                    SharedPreferenceSingleton preferenceSingleton){
+        this.repoInterface = repoInterface;
         this.preferenceSingleton = preferenceSingleton;
         taskList = preferenceSingleton.getSavedTaskList();
         completedList = preferenceSingleton.getSavedCompletedList();
         inUseTitles = preferenceSingleton.getSavedTitles();
     }
 
-    public synchronized void addTask(Task newTask){
+    public synchronized boolean addTask(Task newTask){
         if(newTask != null){
             taskList.add(newTask);
-            preferenceSingleton.saveList(taskList, inUseTitles);
             inUseTitles.add(newTask.getTitle());
-            modelInterface.onSuccessTaskAdded(true);
+            return preferenceSingleton.saveList(taskList, inUseTitles);
         }
+        return false;
     }
 
     public synchronized void saveCompletedList(List<Task> completedList){

@@ -1,29 +1,31 @@
 package com.example.checklist.presenter;
 
 import com.example.checklist.ExceededListSizeException;
-import com.example.checklist.model.ModelImpl;
+import com.example.checklist.repo.TaskRepo;
 import com.example.checklist.model.Task;
+import com.example.checklist.views.contracts.View;
 
 public class MainPresenter {
-    private MainPresenterInterface mainPresenterInterfaceInterface;
-    private ModelImpl modelImpl;
+    private View view;
+    private TaskRepo taskRepo;
 
-    public MainPresenter(MainPresenterInterface mainPresenterInterfaceInterface, ModelImpl modelImpl){
-        this.mainPresenterInterfaceInterface = mainPresenterInterfaceInterface;
-        this.modelImpl = modelImpl;
+    public MainPresenter(View view, TaskRepo taskRepo){
+        this.view = view;
+        this.taskRepo = taskRepo;
     }
 
     public void displayTaskList(){
-        mainPresenterInterfaceInterface.displayTaskList(modelImpl.getTaskList());
+        view.displayTaskList(taskRepo.getTaskList());
     }
 
-    public void addTask(String title) throws ExceededListSizeException {
-        if(modelImpl.getTaskList().size() == 5) throw new ExceededListSizeException("Unable to add more than 5 tasks at current level");
+    public boolean addTask(String title) throws ExceededListSizeException {
+        if(taskRepo.getTaskList().size() == 5) throw new ExceededListSizeException("Unable to add more than 5 tasks at current level");
         Task newTask = new Task(title, false);
-        modelImpl.addTask(newTask);
+        boolean test = taskRepo.addTask(newTask);
+        return test;
     }
 
     public boolean isUniqueTitle(String taskTitle){
-        return modelImpl.isTitleUnique(taskTitle);
+        return taskRepo.isTitleUnique(taskTitle);
     }
 }
