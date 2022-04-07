@@ -38,13 +38,11 @@ public class SharedPreferenceSingleton {
     }
 
     public boolean saveList(List<Task> currList, Set<String> uniqueNames){
-        boolean isSuccessful = false;
-        if(currList == null) return isSuccessful;
+        if(currList == null) return false;
         String json = gson.toJson(currList);
         editor.putString("taskList", json);
         editor.putStringSet("uniqueNames", uniqueNames);
-        isSuccessful = editor.commit();
-        return isSuccessful;
+        return editor.commit();
     }
 
     public List<Task> getSavedTaskList(){
