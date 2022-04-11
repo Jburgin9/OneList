@@ -74,10 +74,8 @@ public class MainActivity extends AppCompatActivity implements
         synchronized (Objects.requireNonNull(binding.rv.getAdapter())){
             mainPresenter.loadDisplay();
             binding.rv.getAdapter().notifyDataSetChanged();
-
             Log.d("cc", "updateRecyclerViewWithNewTask: ");
         }
-
-
     }
+
 }

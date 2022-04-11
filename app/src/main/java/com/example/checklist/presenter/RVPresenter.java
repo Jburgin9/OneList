@@ -22,7 +22,7 @@ public class RVPresenter {
 //            model.getCompletedList().add(task);
 //            model.saveCompletedList(model.getCompletedList());
 //            model.deleteTitle(task.getTitle());
-//            deleteFromTaskList(task);
+            deleteFromTaskList(task);
         }
     }
 }

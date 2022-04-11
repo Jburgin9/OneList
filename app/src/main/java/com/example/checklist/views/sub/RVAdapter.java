@@ -11,13 +11,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.checklist.databinding.ItemLayoutBinding;
 import com.example.checklist.model.Task;
+import com.example.checklist.presenter.MainPresenter;
 import com.example.checklist.presenter.RVPresenter;
+import com.example.checklist.repo.Repo;
+import com.example.checklist.repo.SharedPreferenceSingleton;
 
 import java.util.List;
 
-public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
-    private static final String TAG = "Adapter";
+public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder> {
     private List<Task> taskList;
+    private SharedPreferenceSingleton preferenceSingleton;
 
     public RVAdapter(List<Task> taskList){
         this.taskList = taskList;
@@ -42,11 +45,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b){
                     taskList.get(truePosition).setCompleted(b);
-//                    holder.binding.isCompleteBox.setChecked(taskList.get(truePosition).isCompleted());
-//                    presenter.deleteFromTaskList(taskList.get(truePosition));
-//                    notifyItemRemoved(truePosition);
-//                    notifyDataSetChanged();
-
                 }
             }
         });
@@ -55,29 +53,18 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
         holder.binding.isCompleteBox.setOnClickListener(v -> {
             if(taskList.get(truePosition).isCompleted()){
                 holder.binding.isCompleteBox.setChecked(taskList.get(truePosition).isCompleted());
-//                presenter.taskComplete(taskList.get(truePosition));
-                notifyItemRemoved(truePosition);
+                Task currTask = taskList.get(truePosition);
+                taskList.get(truePosition).setCompleted(true);
+                preferenceSingleton = SharedPreferenceSingleton.getInstance(holder.binding.getRoot().getContext());
+                preferenceSingleton.getSavedCompletedList().add(currTask);
+                preferenceSingleton.getSavedTitles().remove(currTask.getTitle());
+                int deleteIdx = taskList.indexOf(currTask);
+                taskList.remove(deleteIdx);
+                preferenceSingleton.saveCompletedList(taskList);
                 notifyDataSetChanged();
                 Toast.makeText(v.getContext(), "Task Completed", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-//        holder.binding.trashBtn.setOnClickListener(v -> {
-//                presenter.deleteFromTaskList(taskList.get(position));
-//                notifyItemRemoved(position);
-//                notifyDataSetChanged();
-//        });
-//        holder.binding.isCompleteBox.setOnClickListener(v -> {
-//
-//            if(holder.binding.isCompleteBox.isChecked()){
-//                Log.d(TAG, "onBindViewHolder: checked" );
-//                taskList.get(position).setCompleted(true);
-//                presenter.taskComplete(taskList.get(position));
-//                notifyItemRemoved(position);
-//                notifyDataSetChanged();
-//            }
-//        });
     }
 
     @Override
