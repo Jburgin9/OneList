@@ -40,6 +40,16 @@ public class ExampleUnitTest {
     }
 
     @Test
+    public void titleIsUnique(){
+        assertFalse(presenter.isUniqueTitle("Justin"));
+    }
+
+    @Test
+    public void doesTitleExist() throws ExceededListSizeException{
+
+    }
+
+    @Test
     public void ableToAddTask() throws ExceededListSizeException {
         assert(presenter.addTask("el"));
     }

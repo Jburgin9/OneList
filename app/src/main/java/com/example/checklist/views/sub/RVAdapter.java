@@ -18,11 +18,9 @@ import java.util.List;
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
     private static final String TAG = "Adapter";
     private List<Task> taskList;
-    private RVPresenter presenter;
 
-    public RVAdapter(List<Task> taskList, RVPresenter presenter){
+    public RVAdapter(List<Task> taskList){
         this.taskList = taskList;
-        this.presenter = presenter;
     }
 
     @NonNull
@@ -57,7 +55,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
         holder.binding.isCompleteBox.setOnClickListener(v -> {
             if(taskList.get(truePosition).isCompleted()){
                 holder.binding.isCompleteBox.setChecked(taskList.get(truePosition).isCompleted());
-                presenter.taskComplete(taskList.get(truePosition));
+//                presenter.taskComplete(taskList.get(truePosition));
                 notifyItemRemoved(truePosition);
                 notifyDataSetChanged();
                 Toast.makeText(v.getContext(), "Task Completed", Toast.LENGTH_SHORT).show();
@@ -86,7 +84,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder>{
     public int getItemCount() {
         return taskList.size();
     }
-
 
     class TaskViewHolder extends RecyclerView.ViewHolder {
         ItemLayoutBinding binding;
