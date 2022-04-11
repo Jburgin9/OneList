@@ -54,13 +54,12 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder> {
             if(taskList.get(truePosition).isCompleted()){
                 holder.binding.isCompleteBox.setChecked(taskList.get(truePosition).isCompleted());
                 Task currTask = taskList.get(truePosition);
-                taskList.get(truePosition).setCompleted(true);
                 preferenceSingleton = SharedPreferenceSingleton.getInstance(holder.binding.getRoot().getContext());
                 preferenceSingleton.getSavedCompletedList().add(currTask);
                 preferenceSingleton.getSavedTitles().remove(currTask.getTitle());
                 int deleteIdx = taskList.indexOf(currTask);
-                taskList.remove(deleteIdx);
-                preferenceSingleton.saveCompletedList(taskList);
+                taskList.remove(currTask);
+                preferenceSingleton.saveList(taskList, preferenceSingleton.getSavedTitles());
                 notifyDataSetChanged();
                 Toast.makeText(v.getContext(), "Task Completed", Toast.LENGTH_SHORT).show();
             }
