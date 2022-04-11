@@ -11,18 +11,18 @@ public class RVPresenter {
     }
 
     public void deleteFromTaskList(Task task){
-        int deleteIdx = model.getTaskList().indexOf(task);
-        model.getTaskList().remove(deleteIdx);
-        model.updateList(model.getTaskList());
+//        int deleteIdx = model.retrieveList();
+//        model.getTaskList().remove(deleteIdx);
+//        model.updateList(model.getTaskList());
     }
 
     public void taskComplete(Task task) {
         if(task != null){
-            task.setCompleted(true);
-            model.getCompletedList().add(task);
-            model.saveCompletedList(model.getCompletedList());
-            model.deleteTitle(task.getTitle());
-            deleteFromTaskList(task);
+//            task.setCompleted(true);
+//            model.getCompletedList().add(task);
+//            model.saveCompletedList(model.getCompletedList());
+//            model.deleteTitle(task.getTitle());
+//            deleteFromTaskList(task);
         }
     }
 }
