@@ -7,7 +7,7 @@ import com.example.checklist.model.Task;
 import java.util.List;
 import java.util.Set;
 
-public class TaskRepo implements Repo{
+public class TaskRepo implements Repo {
     private SharedPreferenceSingleton preferenceSingleton;
 
     public TaskRepo(SharedPreferenceSingleton preferenceSingleton){

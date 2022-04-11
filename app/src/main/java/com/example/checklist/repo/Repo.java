@@ -12,6 +12,10 @@ public interface Repo {
     interface OnSuccessListRetrieved {
         void onSuccess(List<Task> currList);
     }
+
+    interface OnSuccessTaskCompletedListener {
+        void onSuccess();
+    }
     void retrieveList(final OnSuccessListRetrieved listRetrieved);
     void addNewTask(Task newTask, final OnSuccessTaskAddedListener listener);
  }
